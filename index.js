@@ -5,8 +5,16 @@ const app = express()
 const PORT = 4000
 
 app.get('/users', async (req, res) => {
-	const users = await User.findAll()
-	res.json(users)
+	try {
+		const users = await User.findAll()
+		if (!users) {
+			res.status(404).send('User not found')
+		} else {
+			res.json(users)
+		}
+	} catch (e) {
+		next(e)
+	}
 })
 
 app.get('/users/:address', async (req, res, next) => {
