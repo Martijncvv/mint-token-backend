@@ -4,11 +4,20 @@ const Token = require('./models').token
 const app = express()
 const PORT = 4000
 
+app.use(express.json())
+
+app.use((req, res, next) => {
+	res.append('Access-Control-Allow-Origin', ['*'])
+	res.append('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
+	res.append('Access-Control-Allow-Headers', 'Content-Type')
+	next()
+})
+
 app.get('/users', async (req, res) => {
 	try {
 		const users = await User.findAll()
 		if (!users) {
-			res.status(404).send('User not found')
+			res.status(404).send('Users not found')
 		} else {
 			res.json(users)
 		}
@@ -72,4 +81,7 @@ app.delete('/users/:address', async (req, res, next) => {
 	}
 })
 
-app.listen(PORT, () => console.log(`Server started in port: ${PORT}`))
+const port = process.env.PORT || PORT
+app.listen(port, () => {
+	console.log(`Listening on port ${port}`)
+})
