@@ -7,10 +7,10 @@ module.exports = {
 			'tokens',
 			[
 				{
-					address: '0x473780deAF4a2Ac070BBbA936B0cdefe7F267dFc',
+					address: '0x927DFb9e957526e4D40448d6D05A39ea39a2ee6B',
 					name: 'TestToken',
-					symbol: 'TT',
-					network: 'Ethereum',
+					symbol: 'TTK',
+					network: 'Goerli',
 				},
 			],
 			{}
