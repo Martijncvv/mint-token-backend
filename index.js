@@ -1,5 +1,6 @@
 const express = require('express')
 const User = require('./models').user
+const Token = require('./models').token
 const app = express()
 const PORT = 4000
 
