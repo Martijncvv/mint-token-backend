@@ -1,7 +1,7 @@
 {
 	"development": {
 		"dialect": "postgres",
-		"url": "postgres://bnduythh:sf9TpSU6vIMlDm2ehjYOFLWwhlETYtet@mouse.db.elephantsql.com/bnduythh"
+		"url": ""
 	},
 	"test": {
 		"username": "root",
@@ -11,10 +11,11 @@
 		"dialect": "mysql"
 	},
 	"production": {
-		"username": "root",
-		"password": null,
-		"database": "database_production",
-		"host": "127.0.0.1",
-		"dialect": "mysql"
+		"use_env_variable": "ELEPHANTSQL_API",
+		"dialectOptions": {
+			"ssl": {
+				"rejectUnauthorized": false
+			}
+		}
 	}
 }

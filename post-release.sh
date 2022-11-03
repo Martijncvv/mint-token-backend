@@ -1,0 +1,1 @@
+yarn sequelize-cli db:migrate
