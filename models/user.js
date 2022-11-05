@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
 	user.init(
 		{
 			address: { type: DataTypes.STRING, allowNull: false, unique: true },
-			tokenAmount: { type: DataTypes.INTEGER, allowNull: false },
+			tokenAmount: { type: DataTypes.NUMERIC(78, 0), allowNull: false },
 		},
 		{
 			sequelize,

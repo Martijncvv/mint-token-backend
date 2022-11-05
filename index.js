@@ -1,11 +1,12 @@
+const cors = require('cors')
 const express = require('express')
-const User = require('./models').user
-const Token = require('./models').token
 const app = express()
+app.use(cors())
+
+const User = require('./models').user
 const PORT = 4000
 
-const cors = require('cors')
-app.use(cors())
+app.use(express.json())
 
 app.get('/users', async (req, res) => {
 	try {
@@ -20,55 +21,97 @@ app.get('/users', async (req, res) => {
 	}
 })
 
-app.get('/users/:address', async (req, res, next) => {
+app.get('/user/:address', async (req, res, next) => {
 	try {
-		const address = parseInt(req.params.address)
+		const { address } = req.params
+
 		const users = await User.findAll()
-		const user = await users.find((user) => user.address == address)
+		const user = await users.find((user) => user.dataValues.address == address)
 
 		if (!user) {
-			res.status(404).send('User not found')
+			res.status(200).send({ message: 'NO-USER' })
 		} else {
-			res.json(user)
+			res.status(200).send({ message: 'USER-FOUND', user })
 		}
 	} catch (e) {
 		next(e)
 	}
 })
 
-app.put('/users/:address', async (req, res, next) => {
+app.post('/user/:address/:tokenAmount', async (req, res, next) => {
 	try {
-		const address = req.body.address
-		const tokenAmount = req.body.tokenAmount
-
-		if (address.length !== 64) {
-			res.status(404).send('Must provide valid address')
+		const address = req.params.address
+		const tokenAmount = Number(req.params.tokenAmount)
+		console.log('address ', address)
+		console.log('tokenAmount ', tokenAmount)
+		if (address.length !== 42) {
+			res.status(404).send({ message: 'Must provide valid address' })
 			return
 		}
-		if (tokenAmount === null || tokenAmount === undefined || tokenAmount < 0) {
-			res.status(404).send('Must provide valid tokenAmount')
+		if (!(tokenAmount >= 0)) {
+			res.status(404).send({ message: 'Must provide valid tokenAmount' })
 			return
 		}
-		const users = await User.findAll()
-		const userToUpdate = await users.find((user) => user.address == address)
 
-		const updatedUser = await userToUpdate.update(req.body)
-		res.json(updatedUser)
+		const user = await User.create({
+			address,
+			tokenAmount,
+		})
+		res.status(200).send({ message: 'user created', user })
 	} catch (e) {
 		next(e)
 	}
 })
 
-app.delete('/users/:address', async (req, res, next) => {
+app.put('/user/:address/:tokenAmount', async (req, res, next) => {
 	try {
+		const address = req.params.address
+		const tokenAmount = Number(req.params.tokenAmount)
+		console.log('address ', address)
+		console.log('tokenAmount ', tokenAmount)
+
+		if (address.length !== 42) {
+			res.status(404).send({ message: 'Must provide valid address' })
+			return
+		}
+		if (!(tokenAmount >= 0)) {
+			res.status(404).send({ message: 'Must provide valid tokenAmount' })
+			return
+		}
 		const users = await User.findAll()
-		const userToDelete = await users.find((user) => user.address == address)
+		const userToUpdate = await users.find(
+			(user) => user.dataValues.address == address
+		)
+		console.log('userToUpdate ', userToUpdate)
+		const user = await userToUpdate.update({
+			address,
+			tokenAmount,
+		})
+		res.status(200).send({ message: 'User updated:', user })
+	} catch (e) {
+		next(e)
+	}
+})
+
+app.delete('/user/:address', async (req, res, next) => {
+	try {
+		const { address } = req.params
+
+		if (address.length !== 42) {
+			res.status(404).send({ message: 'Must provide valid address' })
+			return
+		}
+
+		const users = await User.findAll()
+		const userToDelete = await users.find(
+			(user) => user.dataValues.address == address
+		)
 		if (!userToDelete) {
 			res.status(404).send('User not found')
 		} else {
-			await userToDelete.destroy()
-			console.log(userToDelete)
-			res.status(204).send(`User ${userToDelete} deleted`)
+			const deletedUser = await userToDelete.destroy()
+			console.log(deletedUser)
+			return res.status(204).send({ message: 'User deleted', deletedUser })
 		}
 	} catch (e) {
 		next(e)

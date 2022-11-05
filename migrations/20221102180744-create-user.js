@@ -15,7 +15,7 @@ module.exports = {
 				unique: true,
 			},
 			tokenAmount: {
-				type: Sequelize.INTEGER,
+				type: Sequelize.NUMERIC(78, 0),
 				allowNull: false,
 			},
 			createdAt: {
