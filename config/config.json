@@ -1,7 +1,7 @@
 {
 	"development": {
 		"dialect": "postgres",
-		"url": "postgres://b....."
+		"url": "postgres://YOUR-URL"
 	},
 	"test": {
 		"username": "root",
