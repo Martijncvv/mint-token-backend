@@ -1,7 +1,7 @@
 {
 	"development": {
 		"dialect": "postgres",
-		"url": "postgres://bnduythh:sf9TpSU6vIMlDm2ehjYOFLWwhlETYtet@mouse.db.elephantsql.com/bnduythh"
+		"url": "postgres://b....."
 	},
 	"test": {
 		"username": "root",
