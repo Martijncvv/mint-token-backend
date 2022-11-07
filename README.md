@@ -5,7 +5,7 @@ Sequelize + express backend to store useraccount data.
 ## DB User Model
 
 <p align="center"> 
-  <img src= "./images/user-DB-diagram.png" alt="user DB diagram" width="400" >
+  <img src= "./images/user-DB-diagram.png" alt="user DB diagram" width="200" >
 </p>
 
 ## How to run project
